@@ -1,0 +1,3146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RISK IT</title>
+
+<!-- PeerJS -->
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+
+<style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #09090c;
+    color: #F7F2F7;
+    font-family: Arial, Helvetica, sans-serif;
+    min-height: 100vh;
+}
+
+button,
+input,
+textarea {
+    font-family: inherit;
+}
+
+button {
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.screen {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+}
+
+.container {
+    width: 100%;
+    max-width: 700px;
+    text-align: center;
+}
+
+/* =========================
+   HOME
+========================= */
+
+.logo {
+    font-size: 72px;
+    font-weight: 900;
+    letter-spacing: -5px;
+    line-height: 0.85;
+}
+
+.logo span {
+    color: #8B1E3F;
+}
+
+.tagline {
+    color: #B79ABF;
+    margin-top: 18px;
+    font-size: 16px;
+    letter-spacing: 2px;
+}
+
+.version {
+    color: #624B68;
+    font-size: 11px;
+    letter-spacing: 2px;
+    margin-top: 45px;
+}
+
+.menu {
+    margin-top: 45px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.primary-btn {
+    width: 100%;
+    padding: 16px;
+    background: #8B1E3F;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.primary-btn:hover {
+    background: #6E1734;
+    transform: translateY(-2px);
+}
+
+.secondary-btn {
+    width: 100%;
+    padding: 15px;
+    background: transparent;
+    color: #B79ABF;
+    border: 1px solid #321238;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.secondary-btn:hover {
+    border-color: #8B1E3F;
+    color: white;
+}
+
+/* =========================
+   TITLES
+========================= */
+
+.title {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #8E7A91;
+    margin-bottom: 30px;
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+.field {
+    text-align: left;
+    margin-bottom: 18px;
+}
+
+.field label {
+    display: block;
+    font-size: 12px;
+    color: #B79ABF;
+    margin-bottom: 7px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.field input {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid #321238;
+    background: #111116;
+    color: white;
+    outline: none;
+}
+
+.field input:focus {
+    border-color: #8B1E3F;
+}
+
+/* =========================
+   LEVELS
+========================= */
+
+.section-label {
+    text-align: left;
+    color: #B79ABF;
+    font-size: 12px;
+    letter-spacing: 1px;
+    margin: 25px 0 10px;
+    text-transform: uppercase;
+}
+
+.levels {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.level-btn {
+    padding: 15px 10px;
+    border-radius: 10px;
+    border: 1px solid #321238;
+    background: #111116;
+    color: #B79ABF;
+}
+
+.level-btn:hover {
+    border-color: #8B1E3F;
+}
+
+.level-btn.selected {
+    background: #321238;
+    border-color: #8B1E3F;
+    color: white;
+}
+
+.level-name {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.level-description {
+    font-size: 10px;
+    color: #8E7A91;
+}
+
+/* =========================
+   TARGET
+========================= */
+
+.target-options {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.target-btn {
+    padding: 14px 8px;
+    border-radius: 10px;
+    background: #111116;
+    border: 1px solid #321238;
+    color: #B79ABF;
+    font-weight: bold;
+}
+
+.target-btn:hover {
+    border-color: #8B1E3F;
+}
+
+.target-btn.selected {
+    background: #321238;
+    border-color: #8B1E3F;
+    color: white;
+}
+
+/* =========================
+   ONLINE
+========================= */
+
+.room-code {
+    font-size: 38px;
+    font-weight: 900;
+    letter-spacing: 7px;
+    color: white;
+    margin: 25px 0;
+    padding: 20px;
+    background: #111116;
+    border: 1px solid #8B1E3F;
+    border-radius: 12px;
+}
+
+.connection-status {
+    color: #B79ABF;
+    font-size: 13px;
+    margin: 15px 0;
+}
+
+.connection-status.connected {
+    color: #F7F2F7;
+}
+
+.online-box {
+    background: #111116;
+    border: 1px solid #24102D;
+    border-radius: 14px;
+    padding: 25px;
+    margin-top: 20px;
+}
+
+.divider {
+    color: #624B68;
+    margin: 20px 0;
+    font-size: 12px;
+    letter-spacing: 2px;
+}
+
+/* =========================
+   GAME
+========================= */
+
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.round {
+    color: #8E7A91;
+    font-size: 13px;
+}
+
+.target-display {
+    color: #B79ABF;
+    font-size: 13px;
+}
+
+.turn-text {
+    color: #B79ABF;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.player-turn {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+.scoreboard {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.score-card {
+    background: #111116;
+    border: 1px solid #24102D;
+    border-radius: 12px;
+    padding: 15px;
+}
+
+.score-card.active {
+    border-color: #8B1E3F;
+    box-shadow: 0 0 20px rgba(139, 30, 63, 0.15);
+}
+
+.score-name {
+    color: #B79ABF;
+    font-size: 12px;
+    margin-bottom: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.score {
+    font-size: 27px;
+    font-weight: bold;
+}
+
+/* =========================
+   ROULETTE
+========================= */
+
+.roulette-wrapper {
+    position: relative;
+    width: 190px;
+    height: 210px;
+    margin: 10px auto 20px;
+}
+
+.pointer {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    width: 0;
+    height: 0;
+    border-left: 11px solid transparent;
+    border-right: 11px solid transparent;
+    border-top: 24px solid #F7F2F7;
+}
+
+.roulette {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 0;
+    left: 5px;
+
+    border: 8px solid #24102D;
+
+    background:
+        conic-gradient(
+            #8B1E3F 0deg 90deg,
+            #4B1F5E 90deg 180deg,
+            #6E1734 180deg 270deg,
+            #321238 270deg 360deg
+        );
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-shadow:
+        0 0 35px rgba(110, 23, 52, 0.25);
+
+    transition: transform 3.2s cubic-bezier(0.15, 0.8, 0.2, 1);
+}
+
+.roulette.spinning {
+    transform: rotate(1440deg);
+}
+
+.roulette::after {
+    content: "";
+    position: absolute;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background: #09090c;
+    border: 3px solid #8B1E3F;
+}
+
+.wheel-label {
+    position: absolute;
+    font-size: 9px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    z-index: 2;
+}
+
+.label-truth {
+    top: 28px;
+    left: 61px;
+}
+
+.label-dare {
+    top: 61px;
+    right: 25px;
+}
+
+.label-risk {
+    bottom: 28px;
+    right: 57px;
+}
+
+.label-wild {
+    bottom: 61px;
+    left: 25px;
+}
+
+.spin-label {
+    color: #8E7A91;
+    margin-bottom: 15px;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.card-area {
+    margin-top: 25px;
+}
+
+.category {
+    display: inline-block;
+    padding: 7px 13px;
+    border-radius: 20px;
+    background: #321238;
+    color: #F7F2F7;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+}
+
+.card {
+    background: #111116;
+    border: 1px solid #24102D;
+    border-radius: 14px;
+    padding: 25px;
+    margin-bottom: 15px;
+}
+
+.card-text {
+    font-size: 20px;
+    line-height: 1.5;
+}
+
+.answer-box {
+    width: 100%;
+    min-height: 120px;
+    resize: vertical;
+    margin-top: 20px;
+    padding: 14px;
+    background: #09090c;
+    border: 1px solid #321238;
+    border-radius: 10px;
+    color: white;
+    outline: none;
+    font-size: 15px;
+}
+
+.answer-box:focus {
+    border-color: #8B1E3F;
+}
+
+.input-hint {
+    color: #624B68;
+    font-size: 11px;
+    margin-top: 7px;
+    text-align: left;
+}
+
+.error-message {
+    color: #B85C76;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+.card-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.continue-btn {
+    width: 100%;
+    padding: 14px;
+    background: #8B1E3F;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+.skip-btn {
+    width: 100%;
+    padding: 14px;
+    background: transparent;
+    border: 1px solid #321238;
+    color: #8E7A91;
+    border-radius: 10px;
+}
+
+.skip-btn:hover {
+    border-color: #8B1E3F;
+    color: white;
+}
+
+/* =========================
+   RESULT
+========================= */
+
+.result-box {
+    background: #111116;
+    border: 1px solid #8B1E3F;
+    border-radius: 15px;
+    padding: 35px 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 35px rgba(139, 30, 63, 0.15);
+}
+
+.winner-label {
+    color: #B79ABF;
+    font-size: 13px;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+.winner-name {
+    font-size: 40px;
+    font-weight: 900;
+    margin-bottom: 12px;
+}
+
+.winner-score {
+    color: #8E7A91;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    z-index: 100;
+}
+
+.modal-content {
+    width: 100%;
+    max-width: 600px;
+    max-height: 85vh;
+    overflow-y: auto;
+    background: #111116;
+    border: 1px solid #321238;
+    border-radius: 15px;
+    padding: 25px;
+    text-align: left;
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+}
+
+.rule {
+    margin-bottom: 17px;
+}
+
+.rule strong {
+    color: #B79ABF;
+}
+
+.rule p {
+    color: #8E7A91;
+    line-height: 1.5;
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+.close-btn {
+    margin-top: 10px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 500px) {
+
+    .logo {
+        font-size: 58px;
+    }
+
+    .title {
+        font-size: 27px;
+    }
+
+    .levels {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .target-options {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .card-buttons {
+        grid-template-columns: 1fr;
+    }
+
+    .winner-name {
+        font-size: 32px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="app"></div>
+
+<script>
+
+/* ==================================================
+   CARD DATA
+================================================== */
+
+const cards = {
+
+    TRUTH: {
+
+        SAFE: [
+            { text: "What's a small thing that always makes your day better?", input: true },
+            { text: "What's a habit you wish you could break?", input: true },
+            { text: "What's something you're surprisingly good at?", input: true },
+            { text: "What's the last thing that made you laugh really hard?", input: true }
+        ],
+
+        BOLD: [
+            { text: "What's a secret you've never told most people?", input: true },
+            { text: "What's the most embarrassing thing you've done recently?", input: true },
+            { text: "What's something you pretend not to care about, but actually do?", input: true },
+            { text: "What's the weirdest thought you've had today?", input: true }
+        ],
+
+        INTENSE: [
+            { text: "What's something you wish you could change about yourself?", input: true },
+            { text: "What's a decision you regret making?", input: true },
+            { text: "What's something you've been avoiding lately?", input: true },
+            { text: "What's a truth about yourself that took you a long time to accept?", input: true }
+        ],
+
+        RISKY: [
+            { text: "What's the most chaotic thing you've ever done on impulse?", input: true },
+            { text: "What's something you've done that you would NEVER want your parents to know about?", input: true },
+            { text: "What's the biggest lie you've ever told to get out of something?", input: true },
+            { text: "What's something you would only admit if you knew nobody would judge you?", input: true }
+        ]
+    },
+
+    DARE: {
+
+        SAFE: [
+            { text: "Describe your day using only three words.", input: true },
+            { text: "Make your best dramatic movie-trailer voice and describe what you're doing.", input: false },
+            { text: "Act like a robot for the next 30 seconds.", input: false },
+            { text: "Invent a ridiculous superhero name for yourself.", input: true }
+        ],
+
+        BOLD: [
+            { text: "Write a completely ridiculous excuse for being late to school.", input: true },
+            { text: "Speak only in questions for your next turn.", input: false },
+            { text: "Create a dramatic villain monologue about something completely ordinary.", input: true },
+            { text: "Do your best impression of the other player.", input: false }
+        ],
+
+        INTENSE: [
+            { text: "Write a fake breaking-news headline about yourself.", input: true },
+            { text: "Tell the next answer like you're accepting an award.", input: false },
+            { text: "Invent a completely fake conspiracy theory in 20 seconds.", input: true },
+            { text: "For the next turn, you must answer everything dramatically.", input: false }
+        ],
+
+        RISKY: [
+            { text: "Write the most chaotic text message you can think of without actually sending it.", input: true },
+            { text: "Give yourself a ridiculous nickname and use it for the next turn.", input: true },
+            { text: "Create a fake scandal involving yourself and explain it dramatically.", input: true },
+            { text: "Speak like a news reporter for the next 30 seconds.", input: false }
+        ]
+    }
+};
+
+
+const wildCards = [
+    "Your next card will be worth double points.",
+    "The other player loses 2 points.",
+    "You get to choose your next category.",
+    "Your next turn gets a bonus."
+];
+
+
+/* ==================================================
+   GAME STATE
+================================================== */
+
+let players = [
+    {
+        name: "Player 1",
+        score: 0
+    },
+    {
+        name: "Player 2",
+        score: 0
+    }
+];
+
+let currentPlayer = 0;
+let round = 1;
+
+let intensity = "SAFE";
+let targetScore = 20;
+
+let currentCategory = null;
+let currentCard = null;
+
+let spinning = false;
+
+let gameStarted = false;
+
+let isHost = false;
+let peer = null;
+let connection = null;
+let roomCode = "";
+
+let usedCards = {
+    TRUTH: [],
+    DARE: [],
+    RISK: [],
+    WILD: []
+};
+
+let submittedAnswers = [];
+
+
+/* ==================================================
+   HOME
+================================================== */
+
+function home() {
+
+    document.getElementById("app").innerHTML = `
+
+        <div class="screen">
+
+            <div class="container">
+
+                <div class="logo">
+                    RISK<span>/</span>IT
+                </div>
+
+                <div class="tagline">
+                    How far will you go?
+                </div>
+
+                <div class="menu">
+
+                    <button
+                        class="primary-btn"
+                        onclick="onlineSetup()"
+                    >
+                        PLAY ONLINE
+                    </button>
+
+                    <button
+                        class="secondary-btn"
+                        onclick="showRules()"
+                    >
+                        HOW TO PLAY
+                    </button>
+
+                </div>
+
+                <div class="version">
+                    CHAT EDITION · 05
+                </div>
+
+            </div>
+
+        </div>
+    `;
+}
+
+
+/* ==================================================
+   ONLINE SETUP
+================================================== */
+
+function onlineSetup() {
+
+    document.getElementById("app").innerHTML = `
+
+        <div class="screen">
+
+            <div class="container">
+
+                <div class="title">
+                    PLAY ONLINE
+                </div>
+
+                <div class="subtitle">
+                    Create a room or join your friend's game.
+                </div>
+
+
+                <div class="online-box">
+
+                    <button
+                        class="primary-btn"
+                        onclick="createRoom()"
+                    >
+                        CREATE ROOM
+                    </button>
+
+
+                    <div class="divider">
+                        OR
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Room code
+                        </label>
+
+                        <input
+                            id="joinCode"
+                            type="text"
+                            maxlength="6"
+                            placeholder="Enter code"
+                            style="text-transform:uppercase;"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Your name
+                        </label>
+
+                        <input
+                            id="joinName"
+                            type="text"
+                            maxlength="20"
+                            placeholder="Enter name"
+                        >
+
+                    </div>
+
+
+                    <button
+                        class="primary-btn"
+                        onclick="joinRoom()"
+                    >
+                        JOIN ROOM
+                    </button>
+
+                </div>
+
+
+                <div style="margin-top:15px;">
+
+                    <button
+                        class="secondary-btn"
+                        onclick="home()"
+                    >
+                        BACK
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+    `;
+}
+
+
+/* ==================================================
+   CREATE ROOM
+================================================== */
+
+function createRoom() {
+
+    isHost = true;
+
+    const name =
+        promptForName("Enter your name:");
+
+    if (!name) return;
+
+
+    players[0].name = name;
+    players[0].score = 0;
+
+
+    roomCode =
+        Math.random()
+            .toString(36)
+            .substring(2, 8)
+            .toUpperCase();
+
+
+    peer = new Peer("riskit-" + roomCode);
+
+
+    peer.on("open", function(id) {
+
+        document.getElementById("app").innerHTML = `
+
+            <div class="screen">
+
+                <div class="container">
+
+                    <div class="title">
+                        ROOM CREATED
+                    </div>
+
+                    <div class="subtitle">
+                        Send this code to your friend.
+                    </div>
+
+
+                    <div class="room-code">
+                        ${roomCode}
+                    </div>
+
+
+                    <div class="connection-status">
+                        WAITING FOR PLAYER 2...
+                    </div>
+
+
+                    <div class="online-box">
+
+                        <div style="
+                            color:#B79ABF;
+                            font-size:13px;
+                            line-height:1.6;
+                        ">
+                            Your friend should open
+                            <b>PLAY ONLINE</b> and enter
+                            this room code.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        `;
+
+        waitForPlayer();
+    });
+
+
+    peer.on("error", function(error) {
+
+        console.log(error);
+
+        showConnectionError();
+    });
+}
+
+
+/* ==================================================
+   WAIT FOR PLAYER
+================================================== */
+
+function waitForPlayer() {
+
+    peer.on("connection", function(conn) {
+
+        connection = conn;
+
+        connection.on("open", function() {
+
+            connection.send({
+
+                type: "ROOM_ACCEPTED",
+
+                playerIndex: 1,
+
+                hostName:
+                    players[0].name
+            });
+
+        });
+
+
+        connection.on("data", function(data) {
+
+            handleNetworkMessage(data);
+
+        });
+
+
+        connection.on("close", function() {
+
+            showDisconnected();
+
+        });
+
+    });
+}
+
+
+/* ==================================================
+   JOIN ROOM
+================================================== */
+
+function joinRoom() {
+
+    const code =
+        document
+            .getElementById("joinCode")
+            .value
+            .trim()
+            .toUpperCase();
+
+    const name =
+        document
+            .getElementById("joinName")
+            .value
+            .trim();
+
+
+    if (!code || !name) {
+
+        alert("Enter the room code and your name.");
+
+        return;
+    }
+
+
+    isHost = false;
+
+    players[1].name = name;
+
+    roomCode = code;
+
+
+    peer = new Peer();
+
+
+    peer.on("open", function() {
+
+        connection =
+            peer.connect("riskit-" + roomCode);
+
+
+        connection.on("open", function() {
+
+            connection.send({
+
+                type: "PLAYER_JOINED",
+
+                name: name
+
+            });
+
+
+            document.getElementById("app").innerHTML = `
+
+                <div class="screen">
+
+                    <div class="container">
+
+                        <div class="title">
+                            JOINING...
+                        </div>
+
+                        <div class="connection-status">
+                            CONNECTING TO ROOM ${roomCode}
+                        </div>
+
+                    </div>
+
+                </div>
+            `;
+        });
+
+
+        connection.on("data", function(data) {
+
+            handleNetworkMessage(data);
+
+        });
+
+
+        connection.on("close", function() {
+
+            showDisconnected();
+
+        });
+
+    });
+
+
+    peer.on("error", function(error) {
+
+        console.log(error);
+
+        showConnectionError();
+
+    });
+}
+
+
+/* ==================================================
+   NETWORK MESSAGE HANDLER
+================================================== */
+
+function handleNetworkMessage(data) {
+
+    if (!data || !data.type) return;
+
+
+    /* --------------------------
+       ROOM ACCEPTED
+    -------------------------- */
+
+    if (data.type === "ROOM_ACCEPTED") {
+
+        if (!isHost) {
+
+            players[0].name =
+                data.hostName;
+
+            document.getElementById("app").innerHTML = `
+
+                <div class="screen">
+
+                    <div class="container">
+
+                        <div class="title">
+                            WAITING FOR HOST
+                        </div>
+
+                        <div class="connection-status connected">
+                            CONNECTED ✓
+                        </div>
+
+                        <div class="online-box">
+
+                            <div style="
+                                color:#B79ABF;
+                                line-height:1.6;
+                            ">
+                                You're in the room.
+                                <br><br>
+                                Waiting for the host
+                                to start the game...
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            `;
+        }
+
+        return;
+    }
+
+
+    /* --------------------------
+       PLAYER JOINED
+    -------------------------- */
+
+    if (data.type === "PLAYER_JOINED") {
+
+        if (isHost) {
+
+            players[1].name =
+                data.name;
+
+
+            connection.send({
+
+                type: "PLAYER_READY",
+
+                playerName:
+                    players[0].name
+
+            });
+
+
+            hostGameSetup();
+        }
+
+        return;
+    }
+
+
+    /* --------------------------
+       PLAYER READY
+    -------------------------- */
+
+    if (data.type === "PLAYER_READY") {
+
+        if (!isHost) {
+
+            players[0].name =
+                data.playerName;
+
+        }
+
+        return;
+    }
+
+
+    /* --------------------------
+       GAME START
+    -------------------------- */
+
+    if (data.type === "GAME_START") {
+
+        intensity =
+            data.intensity;
+
+        targetScore =
+            data.targetScore;
+
+        players =
+            data.players;
+
+        currentPlayer =
+            data.currentPlayer;
+
+        round =
+            data.round;
+
+        usedCards =
+            data.usedCards;
+
+        submittedAnswers =
+            data.submittedAnswers;
+
+        gameStarted = true;
+
+        renderGame();
+
+        return;
+    }
+
+
+    /* --------------------------
+       SPIN RESULT
+    -------------------------- */
+
+    if (data.type === "SPIN_RESULT") {
+
+        currentCategory =
+            data.category;
+
+        currentCard =
+            data.card;
+
+        renderGame();
+
+        setTimeout(() => {
+
+            showCard(currentCard);
+
+        }, 100);
+
+        return;
+    }
+
+
+    /* --------------------------
+       STATE UPDATE
+    -------------------------- */
+
+    if (data.type === "STATE_UPDATE") {
+
+        players =
+            data.players;
+
+        currentPlayer =
+            data.currentPlayer;
+
+        round =
+            data.round;
+
+        targetScore =
+            data.targetScore;
+
+        currentCategory =
+            data.currentCategory;
+
+        currentCard =
+            data.currentCard;
+
+        submittedAnswers =
+            data.submittedAnswers;
+
+        renderGame();
+
+        return;
+    }
+
+
+    /* --------------------------
+       GAME OVER
+    -------------------------- */
+
+    if (data.type === "GAME_OVER") {
+
+        players =
+            data.players;
+
+        currentPlayer =
+            data.currentPlayer;
+
+        showWinner();
+
+        return;
+    }
+
+}
+
+
+/* ==================================================
+   HOST GAME SETUP
+================================================== */
+
+function hostGameSetup() {
+
+    document.getElementById("app").innerHTML = `
+
+        <div class="screen">
+
+            <div class="container">
+
+                <div class="title">
+                    PLAYER 2 JOINED
+                </div>
+
+                <div class="subtitle">
+                    ${escapeHTML(players[1].name)}
+                    is ready.
+                </div>
+
+
+                <div class="online-box">
+
+                    <div class="connection-status connected">
+                        CONNECTED ✓
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Intensity
+                        </label>
+
+                        <div class="levels">
+
+                            <button
+                                class="level-btn selected"
+                                onclick="selectLevel('SAFE', this)"
+                            >
+                                <span class="level-name">
+                                    SAFE
+                                </span>
+                                <span class="level-description">
+                                    Easy going
+                                </span>
+                            </button>
+
+                            <button
+                                class="level-btn"
+                                onclick="selectLevel('BOLD', this)"
+                            >
+                                <span class="level-name">
+                                    BOLD
+                                </span>
+                                <span class="level-description">
+                                    A little risky
+                                </span>
+                            </button>
+
+                            <button
+                                class="level-btn"
+                                onclick="selectLevel('INTENSE', this)"
+                            >
+                                <span class="level-name">
+                                    INTENSE
+                                </span>
+                                <span class="level-description">
+                                    Things get serious
+                                </span>
+                            </button>
+
+                            <button
+                                class="level-btn"
+                                onclick="selectLevel('RISKY', this)"
+                            >
+                                <span class="level-name">
+                                    RISKY
+                                </span>
+                                <span class="level-description">
+                                    No turning back
+                                </span>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="section-label">
+                        Winning score
+                    </div>
+
+
+                    <div class="target-options">
+
+                        <button
+                            class="target-btn"
+                            onclick="selectTarget(10, this)"
+                        >
+                            10
+                        </button>
+
+                        <button
+                            class="target-btn selected"
+                            onclick="selectTarget(20, this)"
+                        >
+                            20
+                        </button>
+
+                        <button
+                            class="target-btn"
+                            onclick="selectTarget(30, this)"
+                        >
+                            30
+                        </button>
+
+                        <button
+                            class="target-btn"
+                            onclick="selectTarget(50, this)"
+                        >
+                            50
+                        </button>
+
+                    </div>
+
+
+                    <div style="margin-top:20px;">
+
+                        <button
+                            class="primary-btn"
+                            onclick="startOnlineGame()"
+                        >
+                            START GAME
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    `;
+}
+
+
+/* ==================================================
+   START ONLINE GAME
+================================================== */
+
+function startOnlineGame() {
+
+    currentPlayer = 0;
+    round = 1;
+
+    players[0].score = 0;
+    players[1].score = 0;
+
+    currentCategory = null;
+    currentCard = null;
+
+    usedCards = {
+        TRUTH: [],
+        DARE: [],
+        RISK: [],
+        WILD: []
+    };
+
+    submittedAnswers = [];
+
+    gameStarted = true;
+
+
+    const state = {
+
+        type: "GAME_START",
+
+        players: players,
+
+        currentPlayer: currentPlayer,
+
+        round: round,
+
+        intensity: intensity,
+
+        targetScore: targetScore,
+
+        usedCards: usedCards,
+
+        submittedAnswers:
+            submittedAnswers
+
+    };
+
+
+    connection.send(state);
+
+    renderGame();
+}
+
+
+/* ==================================================
+   SEND STATE
+================================================== */
+
+function sendState() {
+
+    if (!isHost || !connection) return;
+
+    connection.send({
+
+        type: "STATE_UPDATE",
+
+        players: players,
+
+        currentPlayer:
+            currentPlayer,
+
+        round:
+            round,
+
+        targetScore:
+            targetScore,
+
+        currentCategory:
+            currentCategory,
+
+        currentCard:
+            currentCard,
+
+        submittedAnswers:
+            submittedAnswers
+
+    });
+}
+
+
+/* ==================================================
+   GAME SCREEN
+================================================== */
+
+function renderGame() {
+
+    document.getElementById("app").innerHTML = `
+
+        <div class="screen">
+
+            <div class="container">
+
+                <div class="game-header">
+
+                    <div class="round">
+                        ROUND ${round}
+                    </div>
+
+                    <div class="target-display">
+                        FIRST TO ${targetScore}
+                    </div>
+
+                </div>
+
+
+                <div class="turn-text">
+                    CURRENT PLAYER
+                </div>
+
+
+                <div class="player-turn">
+                    ${escapeHTML(players[currentPlayer].name)}
+                </div>
+
+
+                <div class="scoreboard">
+
+                    <div class="score-card ${
+                        currentPlayer === 0
+                        ? "active"
+                        : ""
+                    }">
+
+                        <div class="score-name">
+                            ${escapeHTML(players[0].name)}
+                        </div>
+
+                        <div class="score">
+                            ${players[0].score}
+                        </div>
+
+                    </div>
+
+
+                    <div class="score-card ${
+                        currentPlayer === 1
+                        ? "active"
+                        : ""
+                    }">
+
+                        <div class="score-name">
+                            ${escapeHTML(players[1].name)}
+                        </div>
+
+                        <div class="score">
+                            ${players[1].score}
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="roulette-wrapper">
+
+                    <div class="pointer"></div>
+
+                    <div
+                        class="roulette"
+                        id="roulette"
+                    >
+
+                        <span class="wheel-label label-truth">
+                            TRUTH
+                        </span>
+
+                        <span class="wheel-label label-dare">
+                            DARE
+                        </span>
+
+                        <span class="wheel-label label-risk">
+                            RISK
+                        </span>
+
+                        <span class="wheel-label label-wild">
+                            WILD
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="spin-label">
+
+                    ${
+                        currentCard
+                        ? "Your result:"
+                        : "Spin the wheel."
+                    }
+
+                </div>
+
+
+                <div id="gameContent">
+
+                    ${
+                        currentCard
+                        ? ""
+                        : `
+
+                            <button
+                                class="primary-btn"
+                                onclick="spin()"
+                                id="spinButton"
+                                ${
+                                    !isHost
+                                    || currentPlayer !== 0
+                                    ? "disabled"
+                                    : ""
+                                }
+                            >
+                                ${
+                                    currentPlayer === 0
+                                    ? "SPIN"
+                                    : "WAITING..."
+                                }
+                            </button>
+
+                        `
+                    }
+
+                </div>
+
+
+                <div style="margin-top:20px;">
+
+                    <button
+                        class="secondary-btn"
+                        onclick="showRules()"
+                    >
+                        HOW TO PLAY
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+    `;
+
+
+    if (currentCard) {
+
+        showCard(currentCard);
+
+    }
+
+}
+
+
+/* ==================================================
+   SPIN
+================================================== */
+
+function spin() {
+
+    if (!isHost) return;
+
+    if (spinning) return;
+
+    if (currentPlayer !== 0) return;
+
+    spinning = true;
+
+
+    const roulette =
+        document.getElementById("roulette");
+
+    const spinButton =
+        document.getElementById("spinButton");
+
+
+    if (spinButton) {
+
+        spinButton.disabled = true;
+
+        spinButton.style.opacity = "0.5";
+
+    }
+
+
+    roulette.classList.remove("spinning");
+
+    void roulette.offsetWidth;
+
+    roulette.classList.add("spinning");
+
+
+    setTimeout(() => {
+
+        currentCategory =
+            getRandomCategory();
+
+        currentCard =
+            getCard(currentCategory);
+
+
+        connection.send({
+
+            type: "SPIN_RESULT",
+
+            category:
+                currentCategory,
+
+            card:
+                currentCard
+
+        });
+
+
+        revealCard();
+
+        spinning = false;
+
+    }, 3200);
+}
+
+
+/* ==================================================
+   RANDOM CATEGORY
+================================================== */
+
+function getRandomCategory() {
+
+    const categories = [
+        "TRUTH",
+        "DARE",
+        "RISK",
+        "WILD"
+    ];
+
+    return categories[
+        Math.floor(
+            Math.random() * categories.length
+        )
+    ];
+}
+
+
+/* ==================================================
+   GET CARD
+================================================== */
+
+function getCard(category) {
+
+    if (
+        category === "RISK" ||
+        category === "WILD"
+    ) {
+
+        return {
+
+            category:
+                category,
+
+            text:
+                null,
+
+            input:
+                false
+
+        };
+    }
+
+
+    let available =
+        cards[category][intensity]
+            .filter(
+                (_, index) =>
+                    !usedCards[category]
+                        .includes(index)
+            );
+
+
+    if (available.length === 0) {
+
+        usedCards[category] = [];
+
+        available =
+            cards[category][intensity];
+
+    }
+
+
+    const selected =
+        available[
+            Math.floor(
+                Math.random() *
+                available.length
+            )
+        ];
+
+
+    const originalIndex =
+        cards[category][intensity]
+            .indexOf(selected);
+
+
+    usedCards[category]
+        .push(originalIndex);
+
+
+    return {
+
+        category:
+            category,
+
+        text:
+            selected.text,
+
+        input:
+            selected.input
+
+    };
+}
+
+
+/* ==================================================
+   REVEAL
+================================================== */
+
+function revealCard() {
+
+    showCard(currentCard);
+
+}
+
+
+/* ==================================================
+   SHOW CARD
+================================================== */
+
+function showCard(card) {
+
+    const gameContent =
+        document.getElementById("gameContent");
+
+
+    if (!gameContent) return;
+
+
+    if (card.category === "RISK") {
+
+        showRiskCard(card);
+
+        return;
+    }
+
+
+    if (card.category === "WILD") {
+
+        showWildCard(card);
+
+        return;
+    }
+
+
+    let basePoints = 0;
+
+
+    if (card.category === "TRUTH") {
+
+        basePoints = 2;
+
+    }
+
+
+    if (card.category === "DARE") {
+
+        basePoints = 3;
+
+    }
+
+
+    const requiresInput =
+        card.category === "TRUTH"
+        ||
+        (
+            card.category === "DARE"
+            &&
+            card.input === true
+        );
+
+
+    gameContent.innerHTML = `
+
+        <div class="card-area">
+
+            <div class="category">
+                ${card.category}
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-text">
+                    ${escapeHTML(card.text)}
+                </div>
+
+
+                ${
+                    requiresInput
+
+                    ? `
+
+                        <textarea
+                            id="answerInput"
+                            class="answer-box"
+                            placeholder="Write your answer here..."
+                        ></textarea>
+
+                        <div class="input-hint">
+                            Your answer will be
+                            submitted with this card.
+                        </div>
+
+                        <div
+                            id="answerError"
+                            class="error-message"
+                        ></div>
+
+                    `
+
+                    : ""
+                }
+
+
+                <div class="card-buttons">
+
+                    ${
+                        requiresInput
+
+                        ? `
+
+                            <button
+                                class="continue-btn"
+                                onclick="submitAnswer(${basePoints})"
+                            >
+                                SUBMIT
+                            </button>
+
+                        `
+
+                        : `
+
+                            <button
+                                class="continue-btn"
+                                onclick="completeCard(${basePoints})"
+                            >
+                                DONE
+                            </button>
+
+                        `
+                    }
+
+
+                    <button
+                        class="skip-btn"
+                        onclick="skipCard()"
+                    >
+                        SKIP -2
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+    `;
+}
+
+
+/* ==================================================
+   SUBMIT ANSWER
+================================================== */
+
+function submitAnswer(points) {
+
+    if (!isHost) return;
+
+
+    const input =
+        document.getElementById("answerInput");
+
+    const error =
+        document.getElementById("answerError");
+
+
+    if (!input) return;
+
+
+    const answer =
+        input.value.trim();
+
+
+    if (!answer) {
+
+        if (error) {
+
+            error.textContent =
+                "Write an answer before submitting.";
+
+        }
+
+        input.focus();
+
+        return;
+    }
+
+
+    submittedAnswers.push({
+
+        player:
+            players[currentPlayer].name,
+
+        round:
+            round,
+
+        category:
+            currentCard.category,
+
+        question:
+            currentCard.text,
+
+        answer:
+            answer
+
+    });
+
+
+    addPoints(points);
+
+
+    connection.send({
+
+        type: "STATE_UPDATE",
+
+        players:
+            players,
+
+        currentPlayer:
+            currentPlayer,
+
+        round:
+            round,
+
+        targetScore:
+            targetScore,
+
+        currentCategory:
+            currentCategory,
+
+        currentCard:
+            currentCard,
+
+        submittedAnswers:
+            submittedAnswers
+
+    });
+
+
+    if (checkWinner()) return;
+
+
+    document.getElementById("gameContent").innerHTML = `
+
+        <div class="card-area">
+
+            <div class="category">
+                ANSWER LOCKED
+            </div>
+
+            <div class="card">
+
+                <div class="card-text">
+                    Your answer has been submitted.
+                </div>
+
+                <div style="
+                    color:#B79ABF;
+                    margin-top:15px;
+                    font-size:13px;
+                ">
+                    +${points} POINTS
+                </div>
+
+            </div>
+
+
+            <button
+                class="primary-btn"
+                onclick="nextTurn()"
+            >
+                NEXT TURN
+            </button>
+
+        </div>
+    `;
+}
+
+
+/* ==================================================
+   COMPLETE CARD
+================================================== */
+
+function completeCard(points) {
+
+    if (!isHost) return;
+
+
+    addPoints(points);
+
+
+    if (checkWinner()) return;
+
+
+    sendState();
+
+
+    document.getElementById("gameContent").innerHTML = `
+
+        <div class="card-area">
+
+            <div class="card">
+
+                <div class="card-text">
+                    +${points} POINTS
+                </div>
+
+            </div>
+
+
+            <button
+                class="primary-btn"
+                onclick="nextTurn()"
+            >
+                NEXT TURN
+            </button>
+
+        </div>
+    `;
+}
+
+
+/* ==================================================
+   SKIP
+================================================== */
+
+function skipCard() {
+
+    if (!isHost) return;
+
+
+    subtractPoints(2);
+
+
+    if (checkWinner()) return;
+
+
+    sendState();
+
+
+    document.getElementById("gameContent").innerHTML = `
+
+        <div class="card-area">
+
+            <div class="category">
+                SKIPPED
+            </div>
+
+            <div class="card">
+
+                <div class="card-text">
+                    You lost 2 points.
+                </div>
+
+            </div>
+
+
+            <button
+                class="primary-btn"
+                onclick="nextTurn()"
+            >
+                NEXT TURN
+            </button>
+
+        </div>
+    `;
+}
+
+
+/* ==================================================
+   RISK
+================================================== */
+
+function showRiskCard(card) {
+
+    document.getElementById("gameContent").innerHTML = `
+
+        <div class="card-area">
+
+            <div class="category">
+                RISK
+            </div>
+
+            <div class="card">
+
+                <div class="card-text">
+                    Take the safe option for +2 points,
+                    or risk it for a chance at +7...
+                    but failure costs 3 points.
+                </div>
+
+            </div>
+
+
+            <div class="card-buttons">
+
+                <button
+                    class="continue-btn"
+                    onclick="riskSafe()"
+                >
+                    PLAY SAFE · +2
+                </button>
+
+                <button
+                    class="skip-btn"
+                    onclick="riskIt()"
+                >
+                    RISK IT
+                </button>
+
+            </div>
+
+        </div>
+    `;
+}
+
+
+function riskSafe() {
+
+    if (!isHost) return;
+
+
+    addPoints(2);
+
+
+    if (checkWinner()) return;
+
+
+    sendState();
+
+
+    document.getElementById("gameContent").innerHTML = `
+
+        <div class="card-area">
+
+            <div class="category">
+                SAFE
+            </div>
+
+            <div class="card">
+
+                <div class="card-text">
+                    You played it safe.
+                </div>
+
+                <div style="
+                    color:#B79ABF;
+                    margin-top:15px;
+                ">
+                    +2 POINTS
+                </div>
+
+            </div>
+
+
+            <button
+                class="primary-btn"
+                onclick="nextTurn()"
+            >
+                NEXT TURN
+            </button>
+
+        </div>
+    `;
+}
+
+
+function riskIt() {
+
+    if (!isHost) return;
+
+
+    const success =
+        Math.random() >= 0.5;
+
+
+    if (success) {
+
+        addPoints(7);
+
+        if (checkWinner()) return;
+
+        sendState();
+
+
+        document.getElementById("gameContent").innerHTML = `
+
+            <div class="card-area">
+
+                <div class="category">
+                    SUCCESS
+                </div>
+
+                <div class="card">
+
+                    <div class="card-text">
+                        YOU RISKED IT.
+                    </div>
+
+                    <div style="
+                        color:#B79ABF;
+                        margin-top:15px;
+                    ">
+                        +7 POINTS
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="primary-btn"
+                    onclick="nextTurn()"
+                >
+                    NEXT TURN
+                </button>
+
+            </div>
+        `;
+
+    } else {
+
+        subtractPoints(3);
+
+        if (checkWinner()) return;
+
+        sendState();
+
+
+        document.getElementById("gameContent").innerHTML = `
+
+            <div class="card-area">
+
+                <div class="category">
+                    FAILED
+                </div>
+
+                <div class="card">
+
+                    <div class="card-text">
+                        THE RISK DIDN'T PAY OFF.
+                    </div>
+
+                    <div style="
+                        color:#B79ABF;
+                        margin-top:15px;
+                    ">
+                        -3 POINTS
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="primary-btn"
+                    onclick="nextTurn()"
+                >
+                    NEXT TURN
+                </button>
+
+            </div>
+        `;
+    }
+}
+
+
+/* ==================================================
+   WILD
+================================================== */
+
+function showWildCard(card) {
+
+    const effect =
+        wildCards[
+            Math.floor(
+                Math.random() *
+                wildCards.length
+            )
+        ];
+
+
+    currentCard.wildEffect =
+        effect;
+
+
+    document.getElementById("gameContent").innerHTML = `
+
+        <div class="card-area">
+
+            <div class="category">
+                WILD
+            </div>
+
+            <div class="card">
+
+                <div class="card-text">
+                    ${escapeHTML(effect)}
+                </div>
+
+            </div>
+
+
+            <button
+                class="primary-btn"
+                onclick="applyWild()"
+            >
+                ACCEPT
+            </button>
+
+        </div>
+    `;
+}
+
+
+function applyWild() {
+
+    if (!isHost) return;
+
+
+    const effect =
+        currentCard.wildEffect;
+
+
+    let message =
+        effect;
+
+
+    if (
+        effect ===
+        "The other player loses 2 points."
+    ) {
+
+        const otherPlayer =
+            currentPlayer === 0
+            ? 1
+            : 0;
+
+
+        subtractPointsFromPlayer(
+            otherPlayer,
+            2
+        );
+    }
+
+
+    if (
+        effect ===
+        "Your next turn gets a bonus."
+    ) {
+
+        addPoints(1);
+
+        message =
+            "Your bonus is +1 point.";
+    }
+
+
+    if (
+        effect ===
+        "Your next card will be worth double points."
+    ) {
+
+        message =
+            "Your next card will be worth double points.";
+
+    }
+
+
+    if (
+        effect ===
+        "You get to choose your next category."
+    ) {
+
+        message =
+            "You'll get category choice in a future update.";
+
+    }
+
+
+    if (checkWinner()) return;
+
+
+    sendState();
+
+
+    document.getElementById("gameContent").innerHTML = `
+
+        <div class="card-area">
+
+            <div class="category">
+                WILD EFFECT
+            </div>
+
+            <div class="card">
+
+                <div class="card-text">
+                    ${escapeHTML(message)}
+                </div>
+
+            </div>
+
+
+            <button
+                class="primary-btn"
+                onclick="nextTurn()"
+            >
+                NEXT TURN
+            </button>
+
+        </div>
+    `;
+}
+
+
+/* ==================================================
+   POINTS
+================================================== */
+
+function addPoints(points) {
+
+    players[currentPlayer].score += points;
+
+}
+
+
+function subtractPoints(points) {
+
+    players[currentPlayer].score -= points;
+
+
+    if (
+        players[currentPlayer].score < 0
+    ) {
+
+        players[currentPlayer].score = 0;
+
+    }
+}
+
+
+function subtractPointsFromPlayer(
+    playerIndex,
+    points
+) {
+
+    players[playerIndex].score -= points;
+
+
+    if (
+        players[playerIndex].score < 0
+    ) {
+
+        players[playerIndex].score = 0;
+
+    }
+}
+
+
+/* ==================================================
+   WINNER
+================================================== */
+
+function checkWinner() {
+
+    if (
+        players[currentPlayer].score >=
+        targetScore
+    ) {
+
+        if (isHost && connection) {
+
+            connection.send({
+
+                type: "GAME_OVER",
+
+                players:
+                    players,
+
+                currentPlayer:
+                    currentPlayer
+
+            });
+
+        }
+
+
+        showWinner();
+
+        return true;
+    }
+
+
+    return false;
+}
+
+
+/* ==================================================
+   NEXT TURN
+================================================== */
+
+function nextTurn() {
+
+    if (!isHost) return;
+
+
+    if (checkWinner()) return;
+
+
+    currentPlayer =
+        currentPlayer === 0
+        ? 1
+        : 0;
+
+
+    if (currentPlayer === 0) {
+
+        round++;
+
+    }
+
+
+    currentCategory = null;
+
+    currentCard = null;
+
+
+    sendState();
+
+
+    renderGame();
+}
+
+
+/* ==================================================
+   WINNER
+================================================== */
+
+function showWinner() {
+
+    const winner =
+        players[currentPlayer];
+
+
+    document.getElementById("app").innerHTML = `
+
+        <div class="screen">
+
+            <div class="container">
+
+                <div class="result-box">
+
+                    <div class="winner-label">
+                        GAME OVER
+                    </div>
+
+                    <div class="winner-name">
+                        ${escapeHTML(winner.name)}
+                    </div>
+
+                    <div class="winner-score">
+                        ${winner.score} POINTS
+                        · TARGET ${targetScore}
+                    </div>
+
+                </div>
+
+
+                ${
+                    isHost
+                    ? `
+
+                        <button
+                            class="primary-btn"
+                            onclick="startOnlineGame()"
+                        >
+                            PLAY AGAIN
+                        </button>
+
+                    `
+                    : ""
+                }
+
+
+                <div style="margin-top:10px;">
+
+                    <button
+                        class="secondary-btn"
+                        onclick="home()"
+                    >
+                        HOME
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+    `;
+}
+
+
+/* ==================================================
+   NAME HELPER
+================================================== */
+
+function promptForName(message) {
+
+    const name =
+        prompt(message);
+
+
+    if (!name) {
+
+        return null;
+
+    }
+
+
+    return name.trim()
+        .substring(0, 20);
+}
+
+
+/* ==================================================
+   CONNECTION ERROR
+================================================== */
+
+function showConnectionError() {
+
+    document.getElementById("app").innerHTML = `
+
+        <div class="screen">
+
+            <div class="container">
+
+                <div class="title">
+                    CONNECTION ERROR
+                </div>
+
+                <div class="subtitle">
+                    We couldn't connect to the room.
+                </div>
+
+
+                <button
+                    class="primary-btn"
+                    onclick="onlineSetup()"
+                >
+                    TRY AGAIN
+                </button>
+
+            </div>
+
+        </div>
+    `;
+}
+
+
+/* ==================================================
+   DISCONNECTED
+================================================== */
+
+function showDisconnected() {
+
+    if (!gameStarted) return;
+
+
+    document.getElementById("app").innerHTML = `
+
+        <div class="screen">
+
+            <div class="container">
+
+                <div class="title">
+                    PLAYER DISCONNECTED
+                </div>
+
+                <div class="subtitle">
+                    The connection to the other player
+                    was lost.
+                </div>
+
+
+                <button
+                    class="primary-btn"
+                    onclick="home()"
+                >
+                    HOME
+                </button>
+
+            </div>
+
+        </div>
+    `;
+}
+
+
+/* ==================================================
+   RULES
+================================================== */
+
+function showRules() {
+
+    const modal =
+        document.createElement("div");
+
+
+    modal.className = "modal";
+
+    modal.id = "rulesModal";
+
+
+    modal.innerHTML = `
+
+        <div class="modal-content">
+
+            <h2>
+                HOW TO PLAY
+            </h2>
+
+
+            <div class="rule">
+
+                <strong>
+                    🎰 SPIN
+                </strong>
+
+                <p>
+                    Spin the wheel to receive a random
+                    category.
+                </p>
+
+            </div>
+
+
+            <div class="rule">
+
+                <strong>
+                    TRUTH · +2
+                </strong>
+
+                <p>
+                    Answer the question honestly.
+                    Truth cards require a written answer.
+                </p>
+
+            </div>
+
+
+            <div class="rule">
+
+                <strong>
+                    DARE · +3
+                </strong>
+
+                <p>
+                    Complete the challenge.
+                    Some Dares require a written response.
+                </p>
+
+            </div>
+
+
+            <div class="rule">
+
+                <strong>
+                    RISK
+                </strong>
+
+                <p>
+                    Play safe for +2 points,
+                    or RISK IT for a chance at +7.
+                    Failure costs 3 points.
+                </p>
+
+            </div>
+
+
+            <div class="rule">
+
+                <strong>
+                    WILD
+                </strong>
+
+                <p>
+                    Wild cards trigger special effects.
+                </p>
+
+            </div>
+
+
+            <div class="rule">
+
+                <strong>
+                    SKIP · -2
+                </strong>
+
+                <p>
+                    Skip a card and lose 2 points.
+                </p>
+
+            </div>
+
+
+            <div class="rule">
+
+                <strong>
+                    🏆 WINNING
+                </strong>
+
+                <p>
+                    The first player to reach the selected
+                    point target wins.
+                </p>
+
+            </div>
+
+
+            <div class="rule">
+
+                <strong>
+                    👥 ONLINE
+                </strong>
+
+                <p>
+                    One player creates a room and shares
+                    the room code. The second player joins
+                    using that code.
+                </p>
+
+            </div>
+
+
+            <button
+                class="primary-btn close-btn"
+                onclick="closeRules()"
+            >
+                GOT IT
+            </button>
+
+        </div>
+    `;
+
+
+    document.body.appendChild(modal);
+}
+
+
+function closeRules() {
+
+    const modal =
+        document.getElementById("rulesModal");
+
+
+    if (modal) {
+
+        modal.remove();
+
+    }
+}
+
+
+/* ==================================================
+   ESCAPE HTML
+================================================== */
+
+function escapeHTML(text) {
+
+    return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+/* ==================================================
+   START
+================================================== */
+
+home();
+
+</script>
+
+</body>
+</html>
